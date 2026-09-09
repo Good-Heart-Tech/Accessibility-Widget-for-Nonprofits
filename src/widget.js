@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  // Must be captured synchronously at top-level script execution — document.currentScript
+  // Must be captured synchronously at top-level script execution. document.currentScript
   // is only valid while this script is the one actively running, not inside later callbacks.
   var SCRIPT_EL = document.currentScript;
 
@@ -92,7 +92,7 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch (e) {
-      /* localStorage unavailable (private mode, quota) — settings just won't persist */
+      /* localStorage unavailable (private mode, quota). settings just won't persist */
     }
   }
 
@@ -182,17 +182,33 @@
     if (label) label.textContent = speaking ? "Stop reading" : "Read page aloud";
   }
 
-  // Glyph only, no background circle: the toggle button already provides a colored
-  // circle (var(--ght-a11y-brand-primary)). Path is Font Awesome Free's "life-ring"
-  // icon (CC BY 4.0, https://fontawesome.com/license/free), embedded inline so the
-  // widget makes zero external requests. See assets/icon-mark.svg for the standalone
-  // logo version with its own background, used as the project's favicon/badge.
-  function svgIcon() {
-    return (
-      '<svg viewBox="0 0 512 512" width="26" height="26" aria-hidden="true" focusable="false">' +
-      '<path fill="#fff" d="M367.2 412.5C335.9 434.9 297.5 448 256 448s-79.9-13.1-111.2-35.5l58-58c15.8 8.6 34 13.5 53.3 13.5s37.4-4.9 53.3-13.5l58 58zm90.7 .8c33.8-43.4 54-98 54-157.3s-20.2-113.9-54-157.3c9-12.5 7.9-30.1-3.4-41.3S425.8 45 413.3 54C369.9 20.2 315.3 0 256 0S142.1 20.2 98.7 54c-12.5-9-30.1-7.9-41.3 3.4S45 86.2 54 98.7C20.2 142.1 0 196.7 0 256s20.2 113.9 54 157.3c-9 12.5-7.9 30.1 3.4 41.3S86.2 467 98.7 458c43.4 33.8 98 54 157.3 54s113.9-20.2 157.3-54c12.5 9 30.1 7.9 41.3-3.4s12.4-28.8 3.4-41.3zm-45.5-46.1l-58-58c8.6-15.8 13.5-34 13.5-53.3s-4.9-37.4-13.5-53.3l58-58C434.9 176.1 448 214.5 448 256s-13.1 79.9-35.5 111.2zM367.2 99.5l-58 58c-15.8-8.6-34-13.5-53.3-13.5s-37.4 4.9-53.3 13.5l-58-58C176.1 77.1 214.5 64 256 64s79.9 13.1 111.2 35.5zM157.5 309.3l-58 58C77.1 335.9 64 297.5 64 256s13.1-79.9 35.5-111.2l58 58c-8.6 15.8-13.5 34-13.5 53.3s4.9 37.4 13.5 53.3zM208 256a48 48 0 1 1 96 0 48 48 0 1 1 -96 0z"/>' +
-      "</svg>"
+  // The floating toggle button's own icon is real Font Awesome markup (an <i> tag with
+  // Font Awesome classes), not an inline SVG, so a site can override it to any Font Awesome
+  // icon via data-icon on the script tag. See README "Icon override" for the full explanation
+  // and the CDN-loading tradeoff that comes with it.
+  var DEFAULT_TOGGLE_ICON_CLASS = "fa-solid fa-universal-access";
+  var FONT_AWESOME_CDN_URL = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css";
+
+  function toggleIconClass() {
+    if (!SCRIPT_EL) return DEFAULT_TOGGLE_ICON_CLASS;
+    return SCRIPT_EL.getAttribute("data-icon") || DEFAULT_TOGGLE_ICON_CLASS;
+  }
+
+  function ensureFontAwesomeLoaded() {
+    var alreadyPresent = document.querySelector(
+      'link[href*="font-awesome"], link[href*="fontawesome"], script[src*="kit.fontawesome.com"]'
     );
+    if (alreadyPresent || document.getElementById("ght-a11y-fa-cdn")) return;
+    var link = document.createElement("link");
+    link.id = "ght-a11y-fa-cdn";
+    link.rel = "stylesheet";
+    link.href = FONT_AWESOME_CDN_URL;
+    link.crossOrigin = "anonymous";
+    document.head.appendChild(link);
+  }
+
+  function toggleIconHtml() {
+    return '<i class="' + toggleIconClass() + '" aria-hidden="true"></i>';
   }
 
   function buildPanel() {
@@ -330,7 +346,7 @@
     try {
       localStorage.setItem(SEEN_KEY, "1");
     } catch (e) {
-      /* localStorage unavailable — pulse will just show again next visit, harmless */
+      /* localStorage unavailable. pulse will just show again next visit, harmless */
     }
   }
 
@@ -363,6 +379,7 @@
 
   function init() {
     injectStyles();
+    ensureFontAwesomeLoaded();
     applyBrandColors();
     applyAllState();
 
@@ -372,7 +389,7 @@
     toggleBtn.setAttribute("aria-label", "Accessibility options");
     toggleBtn.setAttribute("aria-haspopup", "dialog");
     toggleBtn.setAttribute("aria-expanded", "false");
-    toggleBtn.innerHTML = svgIcon();
+    toggleBtn.innerHTML = toggleIconHtml();
 
     var alreadySeen = true;
     try {

@@ -22,14 +22,14 @@ Not yet included (tracked as follow-up issues): language translation, virtual ke
 
 ## Architecture
 
-- Plain JS + CSS in `src/`, no framework, no runtime dependencies — `esbuild` is only a dev-time minifier
-- `npm run build` minifies `src/widget.js` + `src/widget.css` into `dist/`, which is what gets served
-- `demo/index.html` is a sample static page for manually testing every control
-- Zero external network calls — no fonts, icon CDNs, or analytics
+- Plain JS + CSS in `src/`, no framework, no runtime dependencies. `esbuild` is only a dev-time minifier.
+- `npm run build` minifies `src/widget.js` + `src/widget.css` into `dist/`, which is what gets served.
+- `demo/index.html` is a sample static page for manually testing every control.
+- No fonts, tracking, or analytics of any kind. The one exception is the toggle button's own icon, which loads Font Awesome from a CDN if the host page doesn't already have it. See "Icon" below for the full explanation.
 
 ## Installation
 
-Add one tag to any static site (works on Cloudflare Pages, WordPress, Squarespace, Wix — anywhere you can paste HTML). The widget injects its own styles, so no separate stylesheet link is needed:
+Add one tag to any static site (works on Cloudflare Pages, WordPress, Squarespace, Wix, anywhere you can paste HTML). The widget injects its own styles, so no separate stylesheet link is needed:
 
 ```html
 <script src="https://accessibility.goodhearttech.org/widget.js" defer></script>
@@ -37,7 +37,7 @@ Add one tag to any static site (works on Cloudflare Pages, WordPress, Squarespac
 
 ### Brand colors
 
-Override the toolbar's button and focus-outline colors globally by adding two data attributes to the script tag — no separate config file, no build step:
+Override the toolbar's button and focus-outline colors globally by adding two data attributes to the script tag. No separate config file, no build step:
 
 ```html
 <script
@@ -48,10 +48,30 @@ Override the toolbar's button and focus-outline colors globally by adding two da
 </script>
 ```
 
-- `data-brand-primary` — the toggle button background and pressed-toggle background (defaults to a navy blue)
-- `data-brand-accent` — the focus-outline color (defaults to amber)
+- `data-brand-primary`: the toggle button background and pressed-toggle background (defaults to a navy blue)
+- `data-brand-accent`: the focus-outline color (defaults to amber)
 
 Both are plain CSS custom properties (`--ght-a11y-brand-primary`, `--ght-a11y-brand-accent`) set on `<html>`, so they can also be overridden in the host site's own CSS if preferred over data attributes.
+
+Each site that installs the widget sets its own colors independently. There is no shared or global setting. Good Heart Tech's own site and WOSP, for example, each pass their own values on their own script tag.
+
+### Icon
+
+The floating toggle button's icon defaults to Font Awesome's `fa-solid fa-universal-access` icon, the standard "person in a circle" symbol used across accessibility tools, so visitors recognize it immediately.
+
+Override it to any other Font Awesome icon with `data-icon` on the script tag:
+
+```html
+<script
+  src="https://accessibility.goodhearttech.org/widget.js"
+  data-icon="fa-solid fa-wheelchair"
+  defer>
+</script>
+```
+
+The value is exactly the class string you would put on an `<i>` tag, so any free or kit-hosted Font Awesome icon works, not just a fixed set the widget ships with.
+
+**The tradeoff this introduces:** unlike every other part of this widget, the icon is real Font Awesome markup, not an inline SVG, so it needs Font Awesome's CSS and font files to render. The widget checks the page for an existing Font Awesome `<link>` or Kit `<script>` tag first. If the host site already loads Font Awesome (Good Heart Tech's site does), nothing extra happens. If it does not, the widget adds one `<link>` to Font Awesome's CDN (`cdnjs.cloudflare.com`) itself. That is the one exception to this project having no other external network calls.
 
 ## Deploying this project (Cloudflare Pages)
 
@@ -61,7 +81,7 @@ This repo is meant to be connected once to a Cloudflare Pages project so every c
 2. Build command: `npm run build`
 3. Build output directory: `dist`
 4. Add a custom domain (e.g. `accessibility.goodhearttech.org`) pointing at the Pages project.
-5. Every push to `main` auto-deploys — no manual upload step, no GitHub Actions needed.
+5. Every push to `main` auto-deploys. No manual upload step, no GitHub Actions needed.
 
 ## Local development
 
@@ -74,4 +94,4 @@ Then open `demo/index.html` through a local static server (not `file://`, since 
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE).

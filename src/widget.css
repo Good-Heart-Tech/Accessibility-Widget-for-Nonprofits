@@ -108,9 +108,9 @@ html.ght-a11y-cursor-large * {
   outline-offset: 2px;
 }
 
-.ght-a11y-toggle-btn svg {
-  width: 22px;
-  height: 22px;
+.ght-a11y-toggle-btn i {
+  font-size: 20px;
+  line-height: 1;
 }
 
 /* First-visit attention pulse: a soft expanding ring, stops on first open or after 6s. */
