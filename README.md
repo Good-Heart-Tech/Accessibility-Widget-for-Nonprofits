@@ -1,5 +1,7 @@
 # Accessibility Widget for Nonprofits
 
+<img src="assets/icon-mark.svg" alt="" width="72" height="72" align="right">
+
 A free, open-source, self-hosted accessibility toolbar that Good Heart Tech can drop into any nonprofit client site with a single `<script>` tag.
 
 ## Why this exists
