@@ -2,7 +2,7 @@
 
 <img src="assets/icon-mark.svg" alt="" width="72" height="72" align="right">
 
-A free, open-source, self-hosted accessibility toolbar that drops into any website with a single `<script>` tag. Built by Good Heart Tech, a nonprofit MSP, for its own nonprofit client sites, but there's nothing nonprofit-specific about it. Any site can use it.
+A free, open-source, self-hosted accessibility toolbar that drops into any website with a single `<script>` tag. Built by Good Heart Tech, a nonprofit MSP, for its own nonprofit partners' sites, but there's nothing nonprofit-specific about it. Any site can use it.
 
 **Live demo:** try it right now on [goodhearttech.org](https://goodhearttech.org) or [wosp.app](https://wosp.app), both run this widget in production. No install needed to see it in action.
 
@@ -75,7 +75,7 @@ The value is exactly the class string you would put on an `<i>` tag, so any free
 
 ## Deploying this project (Cloudflare Pages)
 
-This repo is meant to be connected once to a Cloudflare Pages project so every client site shares the same hosted widget:
+This repo is meant to be connected once to a Cloudflare Pages project so every partner site shares the same hosted widget:
 
 1. In the Cloudflare dashboard, create a new Pages project and connect it to this GitHub repo's `main` branch.
 2. Build command: `npm run build`
