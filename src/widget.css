@@ -1,2 +1,219 @@
-/* Good Heart Tech accessibility widget shell styles.
-   TODO: style the toolbar and its toggle button. */
+/* Good Heart Tech accessibility widget styles.
+   Toolbar chrome is scoped under .ght-a11y-* so it never collides with host-site styles.
+   Feature effects are applied via classes/custom properties on <html>, so they work site-wide. */
+
+:root {
+  --ght-a11y-font-scale: 1;
+  --ght-a11y-line-spacing: 1;
+  --ght-a11y-word-spacing: 0em;
+  --ght-a11y-letter-spacing: 0em;
+}
+
+html {
+  font-size: calc(100% * var(--ght-a11y-font-scale));
+}
+
+html body,
+html body * {
+  line-height: calc(1.4 * var(--ght-a11y-line-spacing)) !important;
+  word-spacing: var(--ght-a11y-word-spacing) !important;
+  letter-spacing: var(--ght-a11y-letter-spacing) !important;
+}
+
+/* Contrast modes */
+html.ght-a11y-contrast-dark {
+  background: #000 !important;
+  filter: invert(1) hue-rotate(180deg);
+}
+html.ght-a11y-contrast-dark img,
+html.ght-a11y-contrast-dark video,
+html.ght-a11y-contrast-dark picture {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+html.ght-a11y-contrast-bright {
+  filter: contrast(1.4) brightness(1.15);
+}
+
+html.ght-a11y-contrast-mono {
+  filter: grayscale(1);
+}
+
+/* Highlight links / headers */
+html.ght-a11y-highlight-links a {
+  outline: 2px solid #ffbf00 !important;
+  background: #fff9db !important;
+  color: #1a1a1a !important;
+}
+
+html.ght-a11y-highlight-headers h1,
+html.ght-a11y-highlight-headers h2,
+html.ght-a11y-highlight-headers h3,
+html.ght-a11y-highlight-headers h4,
+html.ght-a11y-highlight-headers h5,
+html.ght-a11y-highlight-headers h6 {
+  outline: 2px solid #2b6cb0 !important;
+  background: #e8f1fb !important;
+}
+
+/* Readable font */
+html.ght-a11y-readable-font,
+html.ght-a11y-readable-font body,
+html.ght-a11y-readable-font * {
+  font-family: Verdana, Tahoma, "Trebuchet MS", sans-serif !important;
+}
+
+/* Enlarged cursor */
+html.ght-a11y-cursor-large,
+html.ght-a11y-cursor-large * {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path d="M4 2l14 8-6 2-2 6z" fill="black" stroke="white" stroke-width="1"/></svg>') 4 4, auto !important;
+}
+
+/* Toolbar toggle button */
+.ght-a11y-root {
+  all: initial;
+}
+
+.ght-a11y-toggle-btn {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 2147483000;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #1a365d;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-family: Arial, sans-serif;
+}
+
+.ght-a11y-toggle-btn:hover,
+.ght-a11y-toggle-btn:focus-visible {
+  background: #2c5282;
+}
+
+.ght-a11y-toggle-btn:focus-visible {
+  outline: 3px solid #ffbf00;
+  outline-offset: 2px;
+}
+
+/* Panel */
+.ght-a11y-panel {
+  position: fixed;
+  left: 16px;
+  bottom: 76px;
+  z-index: 2147483000;
+  width: min(320px, calc(100vw - 32px));
+  max-height: min(560px, calc(100vh - 100px));
+  overflow-y: auto;
+  background: #fff;
+  color: #1a1a1a;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  padding: 16px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.ght-a11y-panel[hidden] {
+  display: none;
+}
+
+.ght-a11y-panel-heading {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  padding-right: 24px;
+}
+
+.ght-a11y-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  color: #1a1a1a;
+  padding: 4px 8px;
+}
+
+.ght-a11y-close:focus-visible,
+.ght-a11y-panel button:focus-visible {
+  outline: 3px solid #1a365d;
+  outline-offset: 2px;
+}
+
+.ght-a11y-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.ght-a11y-toggle {
+  border: 1px solid #cbd5e0;
+  background: #f7fafc;
+  color: #1a1a1a;
+  border-radius: 6px;
+  padding: 8px 6px;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.ght-a11y-toggle[aria-pressed="true"] {
+  background: #1a365d;
+  color: #fff;
+  border-color: #1a365d;
+}
+
+.ght-a11y-full-width {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.ght-a11y-step-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.ght-a11y-step-label {
+  flex: 1;
+  font-size: 13px;
+}
+
+.ght-a11y-step-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #cbd5e0;
+  background: #f7fafc;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #1a1a1a;
+}
+
+.ght-a11y-reset {
+  border: 1px solid #c53030;
+  background: #fff;
+  color: #c53030;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.ght-a11y-reset:hover {
+  background: #fff5f5;
+}
