@@ -108,6 +108,28 @@ html.ght-a11y-cursor-large * {
   outline-offset: 2px;
 }
 
+.ght-a11y-toggle-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* First-visit attention pulse: a soft expanding ring, stops on first open or after 6s. */
+@keyframes ght-a11y-pulse-ring {
+  0% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 0 color-mix(in srgb, var(--ght-a11y-brand-primary) 55%, transparent); }
+  70% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 14px color-mix(in srgb, var(--ght-a11y-brand-primary) 0%, transparent); }
+  100% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 0 color-mix(in srgb, var(--ght-a11y-brand-primary) 0%, transparent); }
+}
+
+.ght-a11y-toggle-btn.ght-a11y-pulse {
+  animation: ght-a11y-pulse-ring 1.8s ease-out 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ght-a11y-toggle-btn.ght-a11y-pulse {
+    animation: none;
+  }
+}
+
 /* Panel */
 .ght-a11y-panel {
   position: fixed;
@@ -119,8 +141,9 @@ html.ght-a11y-cursor-large * {
   overflow-y: auto;
   background: #fff;
   color: #1a1a1a;
-  border-radius: 8px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  border: 1px solid #d6ddff;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(9, 29, 32, 0.18);
   padding: 16px;
   font-family: Arial, sans-serif;
   font-size: 14px;
@@ -165,14 +188,43 @@ html.ght-a11y-cursor-large * {
 }
 
 .ght-a11y-toggle {
+  position: relative;
   border: 1px solid #cbd5e0;
   background: #f7fafc;
   color: #1a1a1a;
-  border-radius: 6px;
-  padding: 8px 6px;
+  border-radius: 10px;
+  padding: 10px 6px 8px;
   font-size: 13px;
   cursor: pointer;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.ght-a11y-toggle-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  display: block;
+}
+
+.ght-a11y-toggle-check {
+  display: none;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 14px;
+  height: 14px;
+  align-items: center;
+  justify-content: center;
+}
+
+.ght-a11y-toggle-check svg {
+  width: 10px;
+  height: 10px;
+  fill: currentColor;
 }
 
 .ght-a11y-toggle[aria-pressed="true"] {
@@ -181,9 +233,21 @@ html.ght-a11y-cursor-large * {
   border-color: var(--ght-a11y-brand-primary);
 }
 
+.ght-a11y-toggle[aria-pressed="true"] .ght-a11y-toggle-check {
+  display: flex;
+}
+
 .ght-a11y-full-width {
   width: 100%;
   margin-top: 8px;
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ght-a11y-full-width .ght-a11y-toggle-icon svg {
+  width: 15px;
+  height: 15px;
 }
 
 .ght-a11y-step-row {
@@ -198,6 +262,14 @@ html.ght-a11y-cursor-large * {
   font-size: 13px;
 }
 
+.ght-a11y-step-readout {
+  min-width: 44px;
+  text-align: center;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: #394053;
+}
+
 .ght-a11y-step-btn {
   width: 32px;
   height: 32px;
@@ -210,10 +282,12 @@ html.ght-a11y-cursor-large * {
 }
 
 .ght-a11y-reset {
+  display: flex;
+  align-items: center;
   border: 1px solid #c53030;
   background: #fff;
   color: #c53030;
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 8px;
   font-size: 13px;
   cursor: pointer;
