@@ -1,8 +1,8 @@
 {
-  "name": "accessibility-widget-for-nonprofits",
+  "name": "accessibility-widget-for-websites",
   "version": "0.1.0",
   "private": true,
-  "description": "Free, self-hosted accessibility toolbar widget for nonprofit client sites.",
+  "description": "Free, self-hosted accessibility toolbar widget for any website.",
   "scripts": {
     "build": "node build.js"
   },

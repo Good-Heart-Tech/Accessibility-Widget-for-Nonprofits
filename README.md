@@ -1,26 +1,20 @@
-# Accessibility Widget for Nonprofits
+# Accessibility Widget for Websites
 
 <img src="assets/icon-mark.svg" alt="" width="72" height="72" align="right">
 
-A free, open-source, self-hosted accessibility toolbar that Good Heart Tech can drop into any nonprofit client site with a single `<script>` tag.
+A free, open-source, self-hosted accessibility toolbar that drops into any website with a single `<script>` tag. Built by Good Heart Tech, a nonprofit MSP, for its own nonprofit client sites, but there's nothing nonprofit-specific about it. Any site can use it.
 
 **Live demo:** try it right now on [goodhearttech.org](https://goodhearttech.org) or [wosp.app](https://wosp.app), both run this widget in production. No install needed to see it in action.
 
 ## Why this exists
 
-Paid overlay widgets (EqualWeb, AccessiBe, etc.) charge ongoing subscriptions and market themselves as full ADA/WCAG "compliance," which they are not. This project gives our nonprofit clients a genuinely free, no-lock-in alternative that:
+Paid overlay widgets (EqualWeb, AccessiBe, etc.) charge ongoing subscriptions and market themselves as full ADA/WCAG "compliance," which they are not. This project is a genuinely free, no-lock-in alternative that:
 
 - Adds visible, easy-to-find accessibility controls (font size, contrast, underline links, dyslexia-friendly font, reduce motion, etc.)
 - Is self-hosted, so there's no third-party vendor, no tracking, and no recurring cost
 - Is small enough for a volunteer engineer to read and modify in one sitting
 
 **Important:** This widget improves usability. It does not make a site WCAG/ADA compliant on its own. Real compliance still requires correct semantic HTML, alt text, color contrast in the base design, and keyboard navigation in the underlying site.
-
-## Status
-
-v1 built: contrast modes, font/line/word/letter spacing, highlight links/headers, readable (dyslexia-friendly) font, enlarged cursor, browser-based text-to-speech, reset button, and persistent per-visitor settings via `localStorage`.
-
-Not yet included (tracked as follow-up issues): language translation, virtual keyboard, AI image descriptions, custom site color remapping.
 
 See [CHANGELOG.md](CHANGELOG.md) for what shipped and when.
 
