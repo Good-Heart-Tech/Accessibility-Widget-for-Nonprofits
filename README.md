@@ -4,6 +4,8 @@
 
 A free, open-source, self-hosted accessibility toolbar that Good Heart Tech can drop into any nonprofit client site with a single `<script>` tag.
 
+**Live demo:** try it right now on [goodhearttech.org](https://goodhearttech.org) or [wosp.app](https://wosp.app), both run this widget in production. No install needed to see it in action.
+
 ## Why this exists
 
 Paid overlay widgets (EqualWeb, AccessiBe, etc.) charge ongoing subscriptions and market themselves as full ADA/WCAG "compliance," which they are not. This project gives our nonprofit clients a genuinely free, no-lock-in alternative that:
@@ -19,6 +21,8 @@ Paid overlay widgets (EqualWeb, AccessiBe, etc.) charge ongoing subscriptions an
 v1 built: contrast modes, font/line/word/letter spacing, highlight links/headers, readable (dyslexia-friendly) font, enlarged cursor, browser-based text-to-speech, reset button, and persistent per-visitor settings via `localStorage`.
 
 Not yet included (tracked as follow-up issues): language translation, virtual keyboard, AI image descriptions, custom site color remapping.
+
+See [CHANGELOG.md](CHANGELOG.md) for what shipped and when.
 
 ## Architecture
 
@@ -50,6 +54,8 @@ Override the toolbar's button and focus-outline colors globally by adding two da
 
 - `data-brand-primary`: the toggle button background and pressed-toggle background (defaults to a navy blue)
 - `data-brand-accent`: the focus-outline color (defaults to amber)
+
+`data-brand-accent` is checked against the panel's white background before it's applied (WCAG's 3:1 minimum contrast for UI components like focus indicators). If a site's chosen color doesn't pass, the widget quietly falls back to the default amber instead of shipping a focus outline nobody can actually see. An accessibility tool with an inaccessible focus indicator would be a pretty bad look.
 
 Both are plain CSS custom properties (`--ght-a11y-brand-primary`, `--ght-a11y-brand-accent`) set on `<html>`, so they can also be overridden in the host site's own CSS if preferred over data attributes.
 

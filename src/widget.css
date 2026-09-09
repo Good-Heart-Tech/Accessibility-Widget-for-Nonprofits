@@ -11,7 +11,7 @@
   /* Brand colors: override globally by adding data-brand-primary / data-brand-accent
      attributes to the widget's <script> tag. See README "Brand colors". */
   --ght-a11y-brand-primary: #1a365d;
-  --ght-a11y-brand-accent: #ffbf00;
+  --ght-a11y-brand-accent: #b45309;
 }
 
 html {
@@ -84,8 +84,8 @@ html.ght-a11y-cursor-large * {
   left: 16px;
   bottom: 16px;
   z-index: 2147483000;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   border: none;
   background: var(--ght-a11y-brand-primary);
@@ -109,7 +109,7 @@ html.ght-a11y-cursor-large * {
 }
 
 .ght-a11y-toggle-btn i {
-  font-size: 20px;
+  font-size: 28px;
   line-height: 1;
 }
 
@@ -134,7 +134,7 @@ html.ght-a11y-cursor-large * {
 .ght-a11y-panel {
   position: fixed;
   left: 16px;
-  bottom: 76px;
+  bottom: 84px;
   z-index: 2147483000;
   width: min(320px, calc(100vw - 32px));
   max-height: min(640px, calc(100vh - 90px));

@@ -26,12 +26,53 @@
     document.head.appendChild(style);
   }
 
+  // #b45309 (a darker amber/gold) rather than a brighter amber: it clears WCAG's 3:1 minimum
+  // against the panel's white background (~5:1) with real margin, so the default itself always
+  // passes the same safeAccent() check used on a site's custom data-brand-accent below.
+  var DEFAULT_ACCENT = "#b45309";
+
+  // WCAG 2.x relative luminance and contrast ratio, used to guard the focus-outline color:
+  // the panel background is always white, so a site's chosen data-brand-accent must still be
+  // visible against it. A hard-to-see focus indicator would make the accessibility widget's
+  // own controls less accessible, which defeats the point.
+  function hexToRgb(hex) {
+    var m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if (!m) return null;
+    return [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)];
+  }
+
+  function relativeLuminance(rgb) {
+    var chan = rgb.map(function (v) {
+      var s = v / 255;
+      return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * chan[0] + 0.7152 * chan[1] + 0.0722 * chan[2];
+  }
+
+  function contrastRatio(hexA, hexB) {
+    var rgbA = hexToRgb(hexA);
+    var rgbB = hexToRgb(hexB);
+    if (!rgbA || !rgbB) return null;
+    var lA = relativeLuminance(rgbA);
+    var lB = relativeLuminance(rgbB);
+    var lighter = Math.max(lA, lB);
+    var darker = Math.min(lA, lB);
+    return (lighter + 0.05) / (darker + 0.05);
+  }
+
+  function safeAccent(accent) {
+    // 3:1 is the WCAG 2.2 minimum for non-text UI components like focus indicators.
+    var ratio = contrastRatio(accent, "#ffffff");
+    if (ratio === null || ratio < 3) return DEFAULT_ACCENT;
+    return accent;
+  }
+
   function applyBrandColors() {
     if (!SCRIPT_EL) return;
     var primary = SCRIPT_EL.getAttribute("data-brand-primary");
     var accent = SCRIPT_EL.getAttribute("data-brand-accent");
     if (primary) ROOT.style.setProperty("--ght-a11y-brand-primary", primary);
-    if (accent) ROOT.style.setProperty("--ght-a11y-brand-accent", accent);
+    if (accent) ROOT.style.setProperty("--ght-a11y-brand-accent", safeAccent(accent));
   }
 
   // Icon paths are Font Awesome Free solid icons (CC BY 4.0, https://fontawesome.com/license/free),
@@ -416,7 +457,10 @@
     container.className = "ght-a11y-root";
     container.appendChild(toggleBtn);
     container.appendChild(panelEl);
-    document.body.appendChild(container);
+    // Inserted first, not appended last: a keyboard or screen-reader user who just landed on
+    // the page would otherwise have to tab through the entire page to reach this. Visually it
+    // stays bottom-left regardless of DOM order, since the button and panel are position: fixed.
+    document.body.insertBefore(container, document.body.firstChild);
   }
 
   if (document.readyState === "loading") {
