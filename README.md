@@ -27,12 +27,29 @@ Not yet included (tracked as follow-up issues): language translation, virtual ke
 
 ## Installation
 
-Add these two tags to any static site (works on Cloudflare Pages, WordPress, Squarespace, Wix — anywhere you can paste HTML):
+Add one tag to any static site (works on Cloudflare Pages, WordPress, Squarespace, Wix — anywhere you can paste HTML). The widget injects its own styles, so no separate stylesheet link is needed:
 
 ```html
-<link rel="stylesheet" href="https://accessibility.goodhearttech.org/widget.css">
 <script src="https://accessibility.goodhearttech.org/widget.js" defer></script>
 ```
+
+### Brand colors
+
+Override the toolbar's button and focus-outline colors globally by adding two data attributes to the script tag — no separate config file, no build step:
+
+```html
+<script
+  src="https://accessibility.goodhearttech.org/widget.js"
+  data-brand-primary="#7189ff"
+  data-brand-accent="#a0ddff"
+  defer>
+</script>
+```
+
+- `data-brand-primary` — the toggle button background and pressed-toggle background (defaults to a navy blue)
+- `data-brand-accent` — the focus-outline color (defaults to amber)
+
+Both are plain CSS custom properties (`--ght-a11y-brand-primary`, `--ght-a11y-brand-accent`) set on `<html>`, so they can also be overridden in the host site's own CSS if preferred over data attributes.
 
 ## Deploying this project (Cloudflare Pages)
 

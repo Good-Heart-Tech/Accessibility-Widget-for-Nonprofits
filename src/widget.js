@@ -5,8 +5,33 @@
 (function () {
   "use strict";
 
+  // Must be captured synchronously at top-level script execution — document.currentScript
+  // is only valid while this script is the one actively running, not inside later callbacks.
+  var SCRIPT_EL = document.currentScript;
+
   var STORAGE_KEY = "ghtA11y";
   var ROOT = document.documentElement;
+  var STYLE_ID = "ght-a11y-styles";
+
+  // Placeholder replaced at build time (see build.js) with the minified contents of widget.css,
+  // so the whole widget installs from a single <script> tag with no separate stylesheet link.
+  var WIDGET_CSS = "__GHT_A11Y_CSS__";
+
+  function injectStyles() {
+    if (document.getElementById(STYLE_ID)) return;
+    var style = document.createElement("style");
+    style.id = STYLE_ID;
+    style.textContent = WIDGET_CSS;
+    document.head.appendChild(style);
+  }
+
+  function applyBrandColors() {
+    if (!SCRIPT_EL) return;
+    var primary = SCRIPT_EL.getAttribute("data-brand-primary");
+    var accent = SCRIPT_EL.getAttribute("data-brand-accent");
+    if (primary) ROOT.style.setProperty("--ght-a11y-brand-primary", primary);
+    if (accent) ROOT.style.setProperty("--ght-a11y-brand-accent", accent);
+  }
 
   var TOGGLE_FEATURES = [
     { id: "contrast-dark", group: "contrast", label: "Dark high-contrast", className: "ght-a11y-contrast-dark" },
@@ -263,6 +288,8 @@
   }
 
   function init() {
+    injectStyles();
+    applyBrandColors();
     applyAllState();
 
     toggleBtn = document.createElement("button");
